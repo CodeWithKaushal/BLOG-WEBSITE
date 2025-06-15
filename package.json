@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A full-stack blog website built with the MERN stack",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon api/index.js",
     "start": "node api/index.js",
