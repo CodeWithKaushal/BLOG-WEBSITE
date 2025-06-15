@@ -26,7 +26,9 @@ export default function SignUp() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        credentials: "include", // Important for cookies
       });
+
       const data = await res.json();
       if (data.success === false) {
         return setErrorMessage(data.message);
@@ -37,7 +39,10 @@ export default function SignUp() {
         navigate("/sign-in");
       }
     } catch (error) {
-      setErrorMessage(error.message);
+      console.error("Signup error:", error);
+      setErrorMessage(
+        error.message || "Network error. Please try again later."
+      );
       setLoading(false);
     }
   };

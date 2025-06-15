@@ -36,8 +36,6 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://blog-website-ia3l.vercel.app",
   "https://blog-website-three-lilac.vercel.app",
-  "https://blog-website-git-main-kaushals-projects-3a6db958.vercel.app",
-  "https://blog-website-3xzdjtinl-kaushals-projects-3a6db958.vercel.app",
 ];
 
 // Apply CORS middleware with proper configuration
@@ -51,10 +49,7 @@ app.use(
         callback(null, true);
       } else {
         console.log("Blocked origin:", origin);
-        // In production, you would use:
-        // callback(new Error('Not allowed by CORS'));
-        // For now, still allowing all origins for debugging
-        callback(null, true);
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
@@ -62,11 +57,29 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
     preflightContinue: false,
     optionsSuccessStatus: 204,
+    maxAge: 86400, // Cache preflight response for 24 hours
   })
 );
 
-// Handle preflight requests explicitly for specific routes
-app.options("*", cors());
+// Handle OPTIONS requests explicitly
+app.options("*", (req, res) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS"
+    );
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, X-Requested-With"
+    );
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.status(204).end();
+  } else {
+    res.status(403).end();
+  }
+});
 
 app.use(express.json());
 app.use(cookieParser());

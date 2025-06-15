@@ -1,31 +1,31 @@
-/**
- * Creates a properly formatted API URL based on the current environment
- * @param {string} endpoint - The API endpoint (should start with 'api/')
- * @returns {string} The complete API URL
- */
-export const createApiUrl = (endpoint) => {
-  // In production, we'll use relative URLs (which will be handled by the proxy or same domain)
-  // In development or when explicitly needed, we'll use the full URL
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+// API Configuration for consistent API URL management
 
-  // Make sure endpoint doesn't start with a slash and the result has one
-  const formattedEndpoint = endpoint.startsWith("/")
-    ? endpoint.slice(1)
-    : endpoint;
-
-  // If API_BASE_URL is set, use it, otherwise use relative path
-  if (API_BASE_URL) {
-    // Ensure there's a trailing slash on the base URL if needed
-    const baseWithTrailingSlash = API_BASE_URL.endsWith("/")
-      ? API_BASE_URL
-      : `${API_BASE_URL}/`;
-
-    return `${baseWithTrailingSlash}${formattedEndpoint}`;
-  }
-
-  // Return relative path with leading slash
-  return `/${formattedEndpoint}`;
+const API_BASE_URLS = {
+  development: 'http://localhost:3000/',
+  production: 'https://blog-website-three-lilac.vercel.app/',
 };
+
+// Determine the current environment
+const currentEnvironment = process.env.NODE_ENV || 'development';
+
+// Get the appropriate base URL
+const getApiBaseUrl = () => {
+  return API_BASE_URLS[currentEnvironment] || API_BASE_URLS.development;
+};
+
+// Create a full API URL from a path
+export const createApiUrl = (path) => {
+  const baseUrl = getApiBaseUrl();
+  // Remove leading slash from path if it exists
+  const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+  return `${baseUrl}${cleanPath}`;
+};
+
+export default {
+  createApiUrl,
+  getApiBaseUrl,
+};
+
 /**
  * Alternative helper function to create full API URLs with environment detection
  * @param {string} endpoint - API endpoint path without leading slash
