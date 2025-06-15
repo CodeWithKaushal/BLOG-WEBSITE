@@ -1,40 +1,47 @@
 /**
- * API Configuration to handle different environments
+ * Creates a properly formatted API URL based on the current environment
+ * @param {string} endpoint - The API endpoint (should start with 'api/')
+ * @returns {string} The complete API URL
  */
+export const createApiUrl = (endpoint) => {
+  // In production, we'll use relative URLs (which will be handled by the proxy or same domain)
+  // In development or when explicitly needed, we'll use the full URL
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
-// List all possible Vercel backend domains
-const VERCEL_BACKEND_DOMAINS = [
-  "https://blog-website-three-lilac.vercel.app",
-  "https://blog-website-git-main-kaushals-projects-3a6db958.vercel.app",
-  "https://blog-website-3xzdjtinl-kaushals-projects-3a6db958.vercel.app"
-];
+  // Make sure endpoint doesn't start with a slash and the result has one
+  const formattedEndpoint = endpoint.startsWith("/")
+    ? endpoint.slice(1)
+    : endpoint;
 
-// Use the first domain as the main production API URL
-const PRODUCTION_API_URL = `${VERCEL_BACKEND_DOMAINS[0]}/api`;
-const DEVELOPMENT_API_URL = "/api";
+  // If API_BASE_URL is set, use it, otherwise use relative path
+  if (API_BASE_URL) {
+    // Ensure there's a trailing slash on the base URL if needed
+    const baseWithTrailingSlash = API_BASE_URL.endsWith("/")
+      ? API_BASE_URL
+      : `${API_BASE_URL}/`;
 
-// Detect if running on Vercel (frontend) or localhost
-const isProduction =
-  import.meta.env.PROD ||
-  window.location.hostname.endsWith("vercel.app") ||
-  VERCEL_BACKEND_DOMAINS.some(domain => window.location.origin.startsWith(domain));
+    return `${baseWithTrailingSlash}${formattedEndpoint}`;
+  }
 
-// Export the appropriate base API URL
-export const API_BASE_URL = isProduction
-  ? PRODUCTION_API_URL
-  : DEVELOPMENT_API_URL;
-
+  // Return relative path with leading slash
+  return `/${formattedEndpoint}`;
+};
 /**
- * Helper function to create full API URLs
+ * Alternative helper function to create full API URLs with environment detection
  * @param {string} endpoint - API endpoint path without leading slash
  * @returns {string} - Full API URL
  */
-export const createApiUrl = (endpoint) => {
+export const createEnvApiUrl = (endpoint) => {
   // Remove leading slash if it exists
   const cleanEndpoint = endpoint.startsWith("/") ? endpoint.slice(1) : endpoint;
 
   // Check if the endpoint already starts with 'api/'
   const hasApiPrefix = cleanEndpoint.startsWith("api/");
+  
+  // Define these variables if not already defined elsewhere
+  const isProduction = process.env.NODE_ENV === "production";
+  const DEVELOPMENT_API_URL = "/api";
+  const PRODUCTION_API_URL = "/api";
 
   // If we're in development
   if (!isProduction) {
@@ -47,5 +54,7 @@ export const createApiUrl = (endpoint) => {
   }
 
   // Always use the main production API URL for production
-  return `${PRODUCTION_API_URL}/${hasApiPrefix ? cleanEndpoint.substring(4) : cleanEndpoint}`;
+  return `${PRODUCTION_API_URL}/${
+    hasApiPrefix ? cleanEndpoint.substring(4) : cleanEndpoint
+  }`;
 };

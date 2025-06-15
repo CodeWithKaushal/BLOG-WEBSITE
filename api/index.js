@@ -40,24 +40,33 @@ const allowedOrigins = [
   "https://blog-website-3xzdjtinl-kaushals-projects-3a6db958.vercel.app",
 ];
 
+// Apply CORS middleware with proper configuration
 app.use(
   cors({
     origin: function (origin, callback) {
       // Allow requests with no origin (like mobile apps, curl requests)
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      if (allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
         console.log("Blocked origin:", origin);
-        callback(null, true); // Temporarily allow all origins while debugging
+        // In production, you would use:
+        // callback(new Error('Not allowed by CORS'));
+        // For now, still allowing all origins for debugging
+        callback(null, true);
       }
     },
-    credentials: true, // Allow cookies to be sent with requests
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
+
+// Handle preflight requests explicitly for specific routes
+app.options("*", cors());
 
 app.use(express.json());
 app.use(cookieParser());
