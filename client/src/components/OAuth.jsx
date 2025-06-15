@@ -6,6 +6,7 @@ import { app } from '../firebase'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signInSuccess } from '../redux/user/userSlice'
+import { createApiUrl } from '../utils/apiConfig';
 
 export default function OAuth() {
     const auth = getAuth(app)
@@ -18,7 +19,7 @@ export default function OAuth() {
         // Sign in with Google
         try {
             const resultsFromGoogle = await signInWithPopup(auth, provider);
-            const res = await fetch('/api/auth/google', {
+            const res = await fetch(createApiUrl('api/auth/google'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

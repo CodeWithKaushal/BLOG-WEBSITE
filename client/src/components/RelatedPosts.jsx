@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { createApiUrl } from '../utils/apiConfig';
 import PostCard from './PostCard';
 
 export default function RelatedPosts({ postId, category, tags = [] }) {
@@ -14,7 +15,7 @@ export default function RelatedPosts({ postId, category, tags = [] }) {
         setLoading(true);
         // Get posts with same category, excluding current post
         // Limit to 3 related posts
-        const res = await fetch(`/api/post/getposts?category=${category}&limit=3`);
+        const res = await fetch(createApiUrl(`api/post/getposts?category=${category}&limit=3`));
         const data = await res.json();
         
         if (res.ok) {

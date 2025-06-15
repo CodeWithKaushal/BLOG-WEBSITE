@@ -8,6 +8,7 @@ import {
   signInFailure,
 } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
+import { createApiUrl } from "../utils/apiConfig";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -30,7 +31,7 @@ export default function SignIn() {
       // setLoading(true);
       // setErrorMessage(null);
 
-      const res = await fetch("/api/auth/signin", {
+      const res = await fetch(createApiUrl("api/auth/signin"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

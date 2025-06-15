@@ -17,6 +17,7 @@ import {
   HiX,
 } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { createApiUrl } from '../utils/apiConfig';
 
 export default function DashUserRoles() {
   const { currentUser } = useSelector((state) => state.user);
@@ -33,7 +34,7 @@ export default function DashUserRoles() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch("/api/user/getusers?limit=50");
+        const res = await fetch(createApiUrl("api/user/getusers?limit=50"));
         const data = await res.json();
         if (res.ok) {
           // In a real implementation, you'd handle pagination properly

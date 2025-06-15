@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "flowbite-react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { createApiUrl } from '../utils/apiConfig';
 
 export default function LikeButton({
   postId,
@@ -30,7 +31,7 @@ export default function LikeButton({
     try {
       setLoading(true);
 
-      const res = await fetch(`/api/post/like/${postId}`, {
+      const res = await fetch(createApiUrl(`api/post/like/${postId}`), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

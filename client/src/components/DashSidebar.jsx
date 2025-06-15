@@ -16,6 +16,7 @@ import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { createApiUrl } from '../utils/apiConfig';
 
 export default function DashSidebar() {
   const location = useLocation();
@@ -31,7 +32,7 @@ export default function DashSidebar() {
   }, [location.search]);
   const handleSignout = async () => {
     try {
-      const res = await fetch("/api/user/signout", {
+      const res = await fetch(createApiUrl("api/user/signout"), {
         method: "POST",
       });
       const data = await res.json();

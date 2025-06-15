@@ -7,6 +7,7 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
 import AdminNotifications from "./AdminNotifications";
+import { createApiUrl } from '../utils/apiConfig';
 
 export default function Header() {
   const path = useLocation().pathname;
@@ -27,7 +28,7 @@ export default function Header() {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch("/api/user/signout", {
+      const res = await fetch(createApiUrl("api/user/signout"), {
         method: "POST",
       });
       const data = await res.json();

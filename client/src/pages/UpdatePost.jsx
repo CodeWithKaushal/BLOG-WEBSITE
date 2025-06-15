@@ -13,6 +13,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { createApiUrl } from '../utils/apiConfig';
 
 export default function UpdatePost() {
     const [file, setFile] = useState(null);
@@ -28,7 +29,7 @@ export default function UpdatePost() {
     useEffect(() => {
         try {
             const fetchPost = async () => {
-                const res = await fetch(`/api/post/getposts?postId=${postId}`);
+                const res = await fetch(createApiUrl(`api/post/getposts?postId=${postId}`));
                 const data = await res.json();
                 if (!res.ok) {
                     console.log(data.message);

@@ -3,6 +3,7 @@ import CallToAction from "../components/CallToAction";
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import { FaCode, FaDatabase, FaRobot, FaChartLine } from "react-icons/fa";
+import { createApiUrl } from '../utils/apiConfig';
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -12,7 +13,7 @@ export default function Home() {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const res = await fetch("/api/post/getPosts");
+        const res = await fetch(createApiUrl("api/post/getPosts"));
         const data = await res.json();
         if (res.ok) {
           setPosts(data.posts);

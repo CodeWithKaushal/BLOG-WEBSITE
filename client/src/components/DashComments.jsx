@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import { createApiUrl } from '../utils/apiConfig';
 
 export default function DashComments() {
     const { currentUser } = useSelector((state) => state.user);
@@ -13,7 +14,7 @@ export default function DashComments() {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const res = await fetch(`/api/comment/getcomments`);
+                const res = await fetch(createApiUrl(`api/comment/getcomments`));
                 const data = await res.json();
                 if (res.ok) {
                     setComments(data.comments);
@@ -34,7 +35,7 @@ export default function DashComments() {
         const startIndex = comments.length;
         try {
             const res = await fetch(
-                `/api/comment/getcomments?startIndex=${startIndex}`
+                createApiUrl(`api/comment/getcomments?startIndex=${startIndex}`)
             );
             const data = await res.json();
             if (res.ok) {
@@ -52,7 +53,7 @@ export default function DashComments() {
         setShowModal(false);
         try {
             const res = await fetch(
-                `/api/comment/deleteComment/${commentIdToDelete}`,
+                createApiUrl(`api/comment/deleteComment/${commentIdToDelete}`),
                 {
                     method: 'DELETE',
                 }

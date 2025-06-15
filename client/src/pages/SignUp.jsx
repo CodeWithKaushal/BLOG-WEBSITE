@@ -2,6 +2,7 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import OAuth from '../components/OAuth';
+import { createApiUrl } from '../utils/apiConfig';
 
 export default function SignUp() {
     const [formData, setFormData] = useState({});
@@ -23,7 +24,7 @@ export default function SignUp() {
             setLoading(true);
             setErrorMessage(null);
 
-            const res = await fetch('/api/auth/signup', {
+            const res = await fetch(createApiUrl('api/auth/signup'), {
 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
