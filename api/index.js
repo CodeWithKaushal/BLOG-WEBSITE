@@ -34,8 +34,8 @@ const app = express();
 // Configure CORS
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://blog-website-ia3l.vercel.app/",
-  "https://blog-website-three-lilac.vercel.app/",
+  "https://blog-website-ia3l.vercel.app",
+  "https://blog-website-three-lilac.vercel.app",
 ];
 
 // Simplified CORS middleware with proper configuration
