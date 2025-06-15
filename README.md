@@ -101,6 +101,27 @@ This will start both the backend server (on port 3000) and the frontend developm
 
 The application is set up to be deployed on Vercel.
 
+### Backend Deployment
+
+1. The API is configured to be deployed on Vercel using the configuration in `/api/vercel.json`
+2. Connect your GitHub repository to Vercel
+3. Set the root directory to `/api`
+4. Vercel will automatically detect the Node.js application and use the correct build settings
+
+### Frontend Deployment
+
+1. The client application is configured to be deployed on Vercel using the configuration in `/client/vercel.json`
+2. Connect your GitHub repository to Vercel
+3. Set the root directory to `/client`
+4. The build command (`npm run build`) and output directory (`dist`) are specified in the vercel.json file
+5. Environment variables are already configured in `.env.production`
+6. Vercel will handle routing for the SPA (Single Page Application) through the rewrites configuration
+
+### Deployment URLs
+
+- Frontend: [https://hackhub-blog.vercel.app](https://hackhub-blog.vercel.app) (example URL, use your actual deployment URL)
+- Backend: [https://blog-website-three-lilac.vercel.app/api](https://blog-website-three-lilac.vercel.app/api)
+
 ## License
 
 This project is licensed under the ISC License.
