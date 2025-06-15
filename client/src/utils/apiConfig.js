@@ -2,15 +2,22 @@
  * API Configuration to handle different environments
  */
 
-// Base API URL for production (Vercel deployment)
-const PRODUCTION_API_URL = "https://blog-website-three-lilac.vercel.app/api";
+// List all possible Vercel backend domains
+const VERCEL_BACKEND_DOMAINS = [
+  "https://blog-website-three-lilac.vercel.app",
+  "https://blog-website-git-main-kaushals-projects-3a6db958.vercel.app",
+  "https://blog-website-3xzdjtinl-kaushals-projects-3a6db958.vercel.app"
+];
 
-// Base API URL for development (local)
+// Use the first domain as the main production API URL
+const PRODUCTION_API_URL = `${VERCEL_BACKEND_DOMAINS[0]}/api`;
 const DEVELOPMENT_API_URL = "/api";
 
-// Check if we're in production environment
+// Detect if running on Vercel (frontend) or localhost
 const isProduction =
-  import.meta.env.PROD || window.location.hostname.includes("vercel.app");
+  import.meta.env.PROD ||
+  window.location.hostname.endsWith("vercel.app") ||
+  VERCEL_BACKEND_DOMAINS.some(domain => window.location.origin.startsWith(domain));
 
 // Export the appropriate base API URL
 export const API_BASE_URL = isProduction
@@ -39,15 +46,6 @@ export const createApiUrl = (endpoint) => {
     return `${DEVELOPMENT_API_URL}/${cleanEndpoint}`;
   }
 
-  // For production, handle the endpoint correctly with the production URL
-  if (hasApiPrefix) {
-    // If endpoint already has api/ prefix, replace it with the production URL's API path
-    return `${PRODUCTION_API_URL.substring(
-      0,
-      PRODUCTION_API_URL.length - 4
-    )}/${cleanEndpoint.substring(4)}`;
-  }
-
-  // Otherwise, add the endpoint to the production URL
-  return `${PRODUCTION_API_URL}/${cleanEndpoint}`;
+  // Always use the main production API URL for production
+  return `${PRODUCTION_API_URL}/${hasApiPrefix ? cleanEndpoint.substring(4) : cleanEndpoint}`;
 };
