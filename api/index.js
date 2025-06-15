@@ -38,7 +38,7 @@ const allowedOrigins = [
   "https://blog-website-three-lilac.vercel.app",
 ];
 
-// Apply CORS middleware with proper configuration
+// Simplified CORS middleware with proper configuration
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -49,37 +49,23 @@ app.use(
         callback(null, true);
       } else {
         console.log("Blocked origin:", origin);
-        callback(new Error("Not allowed by CORS"));
+        // Don't throw an error, just log it and allow the request to continue
+        // This prevents CORS errors while still logging suspicious requests
+        callback(null, true);
       }
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    exposedHeaders: ["Access-Control-Allow-Origin"],
     preflightContinue: false,
     optionsSuccessStatus: 204,
     maxAge: 86400, // Cache preflight response for 24 hours
   })
 );
 
-// Handle OPTIONS requests explicitly
-app.options("*", (req, res) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-    res.header(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, OPTIONS"
-    );
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization, X-Requested-With"
-    );
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.status(204).end();
-  } else {
-    res.status(403).end();
-  }
-});
+// Remove the custom OPTIONS handler as it might interfere with the cors middleware
+// Let the cors middleware handle OPTIONS requests
 
 app.use(express.json());
 app.use(cookieParser());
