@@ -38,7 +38,7 @@ A full-stack blog website built with the MERN stack (MongoDB, Express, React, No
 ### Prerequisites
 
 - Node.js (v14 or higher)
-- npm or yarn
+- npm (v6 or higher) or yarn
 - MongoDB account
 
 ### Installation
@@ -83,6 +83,18 @@ npm run client
 ```
 
 This will start both the backend server (on port 3000) and the frontend development server.
+
+### Troubleshooting
+
+If you encounter permission issues during npm installation (EPERM errors), try one of these solutions:
+
+- Close any applications that might be using the files (e.g., VS Code, terminals)
+- Run your terminal as administrator
+- If on Windows, you can try:
+  ```bash
+  npm cache clean --force
+  npm install
+  ```
 
 ## Folder Structure
 
