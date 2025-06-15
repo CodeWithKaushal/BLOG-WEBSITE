@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import { createApiUrl } from '../utils/apiConfig';
+import { createApiUrl } from "../utils/apiConfig";
 
 export default function DashUsers() {
   const { currentUser } = useSelector((state) => state.user);
@@ -50,9 +50,12 @@ export default function DashUsers() {
 
   const handleDeleteUser = async () => {
     try {
-      const res = await fetch(createApiUrl(`api/user/delete/${userIdToDelete}`), {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        createApiUrl(`api/user/delete/${userIdToDelete}`),
+        {
+          method: "DELETE",
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));

@@ -7,7 +7,7 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
 import AdminNotifications from "./AdminNotifications";
-import { createApiUrl } from '../utils/apiConfig';
+import { createApiUrl } from "../utils/apiConfig";
 
 export default function Header() {
   const path = useLocation().pathname;

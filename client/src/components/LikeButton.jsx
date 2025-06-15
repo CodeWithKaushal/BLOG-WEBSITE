@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "flowbite-react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import { createApiUrl } from '../utils/apiConfig';
+import { createApiUrl } from "../utils/apiConfig";
 
 export default function LikeButton({
   postId,

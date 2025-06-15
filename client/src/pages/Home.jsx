@@ -3,7 +3,7 @@ import CallToAction from "../components/CallToAction";
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import { FaCode, FaDatabase, FaRobot, FaChartLine } from "react-icons/fa";
-import { createApiUrl } from '../utils/apiConfig';
+import { createApiUrl } from "../utils/apiConfig";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);

@@ -17,7 +17,7 @@ import {
   HiX,
 } from "react-icons/hi";
 import { Link } from "react-router-dom";
-import { createApiUrl } from '../utils/apiConfig';
+import { createApiUrl } from "../utils/apiConfig";
 
 export default function DashUserRoles() {
   const { currentUser } = useSelector((state) => state.user);
