@@ -36,9 +36,6 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://blog-website-ia3l.vercel.app",
   "https://blog-website-three-lilac.vercel.app",
-  // Add all possible Vercel preview URLs and variants
-  "https://*.vercel.app",
-  "https://*.now.sh",
 ];
 
 // Improved CORS middleware with better origin handling
