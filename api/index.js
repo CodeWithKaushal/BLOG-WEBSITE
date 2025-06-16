@@ -48,7 +48,7 @@ app.use(
       // Allow requests with no origin (like mobile apps, curl requests)
       if (!origin) return callback(null, true);
 
-      // Check exact matches
+      // Check exact matches first
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
@@ -80,8 +80,33 @@ app.use(
   })
 );
 
-// Add a specific response for OPTIONS requests to ensure proper CORS handling
-app.options("*", cors());
+// Add specific middleware to handle OPTIONS requests properly
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    const origin = req.headers.origin;
+    if (
+      allowedOrigins.includes(origin) ||
+      allowedOrigins.some(
+        (allowed) =>
+          allowed.includes("*") &&
+          new RegExp("^" + allowed.replace("*", ".*") + "$").test(origin)
+      )
+    ) {
+      res.header("Access-Control-Allow-Origin", origin);
+      res.header(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS"
+      );
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, X-Requested-With"
+      );
+      res.header("Access-Control-Allow-Credentials", "true");
+      return res.status(204).end();
+    }
+  }
+  next();
+});
 
 app.use(express.json());
 app.use(cookieParser());
