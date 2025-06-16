@@ -385,13 +385,7 @@ export default function Projects() {
       <div className="max-w-6xl mx-auto px-6 mt-16">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center">
           <div className="flex justify-center mb-6">
-            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500">
-              <img
-                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
-                alt="Kaushal Divekar"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            
           </div>
           <h3 className="text-2xl font-bold mb-2">Kaushal Divekar</h3>
           <p className="text-purple-600 dark:text-purple-400 mb-4">

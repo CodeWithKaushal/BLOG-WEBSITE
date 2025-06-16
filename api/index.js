@@ -36,23 +36,39 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://blog-website-ia3l.vercel.app",
   "https://blog-website-three-lilac.vercel.app",
+  // Add all possible Vercel preview URLs and variants
+  "https://*.vercel.app",
+  "https://*.now.sh",
 ];
 
-// Simplified CORS middleware with proper configuration
+// Improved CORS middleware with better origin handling
 app.use(
   cors({
     origin: function (origin, callback) {
       // Allow requests with no origin (like mobile apps, curl requests)
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        console.log("Blocked origin:", origin);
-        // Don't throw an error, just log it and allow the request to continue
-        // This prevents CORS errors while still logging suspicious requests
-        callback(null, true);
+      // Check exact matches
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
+
+      // Check wildcard matches for Vercel deployments
+      const wildcardMatches = allowedOrigins
+        .filter((allowed) => allowed.includes("*"))
+        .some((pattern) => {
+          const regexPattern = new RegExp(
+            "^" + pattern.replace("*", ".*") + "$"
+          );
+          return regexPattern.test(origin);
+        });
+
+      if (wildcardMatches) {
+        return callback(null, true);
+      }
+
+      console.log("Blocked origin:", origin);
+      callback(new Error(`Origin ${origin} not allowed by CORS policy`));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -64,8 +80,8 @@ app.use(
   })
 );
 
-// Remove the custom OPTIONS handler as it might interfere with the cors middleware
-// Let the cors middleware handle OPTIONS requests
+// Add a specific response for OPTIONS requests to ensure proper CORS handling
+app.options("*", cors());
 
 app.use(express.json());
 app.use(cookieParser());
