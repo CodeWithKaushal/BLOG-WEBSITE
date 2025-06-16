@@ -111,28 +111,24 @@ If you encounter permission issues during npm installation (EPERM errors), try o
 
 ## Deployment
 
-The application is set up to be deployed on Vercel.
+The application is set up for local or custom server deployment. All Vercel-specific configuration has been removed.
 
 ### Backend Deployment
 
-1. The API is configured to be deployed on Vercel using the configuration in `/api/vercel.json`
-2. Connect your GitHub repository to Vercel
-3. Set the root directory to `/api`
-4. Vercel will automatically detect the Node.js application and use the correct build settings
+1. Deploy the API to your preferred Node.js hosting provider or your own server.
+2. Set the root directory to `/api` if needed.
+3. Configure your environment variables as required.
 
 ### Frontend Deployment
 
-1. The client application is configured to be deployed on Vercel using the configuration in `/client/vercel.json`
-2. Connect your GitHub repository to Vercel
-3. Set the root directory to `/client`
-4. The build command (`npm run build`) and output directory (`dist`) are specified in the vercel.json file
-5. Environment variables are already configured in `.env.production`
-6. Vercel will handle routing for the SPA (Single Page Application) through the rewrites configuration
+1. Build the client application using `npm run build` in the `/client` directory.
+2. Deploy the contents of the `/client/dist` folder to your preferred static hosting provider or your own server.
+3. Configure your environment variables as required.
 
 ### Deployment URLs
 
-- Frontend: [https://hackhub-blog.vercel.app](https://hackhub-blog.vercel.app) (example URL, use your actual deployment URL)
-- Backend: [https://blog-website-three-lilac.vercel.app/api](https://blog-website-three-lilac.vercel.app/api)
+- Frontend: http://localhost:5173 (or your custom domain)
+- Backend: http://localhost:3000/api (or your custom domain)
 
 ## License
 

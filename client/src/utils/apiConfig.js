@@ -1,12 +1,12 @@
 // API Configuration for consistent API URL management
 
 const API_BASE_URLS = {
-  development: 'http://localhost:3000/',
-  production: 'https://blog-website-three-lilac.vercel.app/',
+  development: "http://localhost:3000/",
+  production: "http://localhost:3000/",
 };
 
 // Determine the current environment
-const currentEnvironment = process.env.NODE_ENV || 'development';
+const currentEnvironment = process.env.NODE_ENV || "development";
 
 // Get the appropriate base URL
 const getApiBaseUrl = () => {
@@ -17,7 +17,7 @@ const getApiBaseUrl = () => {
 export const createApiUrl = (path) => {
   const baseUrl = getApiBaseUrl();
   // Remove leading slash from path if it exists
-  const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+  const cleanPath = path.startsWith("/") ? path.substring(1) : path;
   return `${baseUrl}${cleanPath}`;
 };
 
@@ -37,7 +37,7 @@ export const createEnvApiUrl = (endpoint) => {
 
   // Check if the endpoint already starts with 'api/'
   const hasApiPrefix = cleanEndpoint.startsWith("api/");
-  
+
   // Define these variables if not already defined elsewhere
   const isProduction = process.env.NODE_ENV === "production";
   const DEVELOPMENT_API_URL = "/api";
@@ -54,7 +54,7 @@ export const createEnvApiUrl = (endpoint) => {
   }
 
   // Always use the main production API URL for production
-  return `${PRODUCTION_API_URL}/${
+  return `${PRODUCTION_API_URL}/$${
     hasApiPrefix ? cleanEndpoint.substring(4) : cleanEndpoint
   }`;
 };
