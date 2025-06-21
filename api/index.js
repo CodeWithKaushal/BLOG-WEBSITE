@@ -35,6 +35,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "https://blog-website-eta-flax.vercel.app",
+  "https://blog-website-n47c.vercel.app",
 ];
 
 // Improved CORS middleware with better origin handling
