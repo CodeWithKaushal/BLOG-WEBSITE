@@ -2,7 +2,7 @@
 
 const API_BASE_URLS = {
   development: "http://localhost:3000/",
-  production: "http://localhost:3000/",
+  production: "https://blog-website-n47c.vercel.app/",
 };
 
 // Determine the current environment

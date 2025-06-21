@@ -32,7 +32,10 @@ const __dirname = path.resolve();
 const app = express();
 
 // Configure CORS
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://blog-website-eta-flax.vercel.app",
+];
 
 // Improved CORS middleware with better origin handling
 app.use(
