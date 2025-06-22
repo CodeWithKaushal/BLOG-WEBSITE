@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 // next to use middleware to handle errors
 export const signup = async (req, res, next) => {
@@ -113,5 +114,63 @@ export const signout = (req, res) => {
       .json("User has been signed out");
   } catch (error) {
     next(errorHandler(500, "Something went wrong"));
+  }
+};
+
+// Forgot password: send reset link
+export const forgotPassword = async (req, res, next) => {
+  const { email, username } = req.body;
+  if (!email || !username)
+    return next(errorHandler(400, "Email and username are required"));
+  try {
+    const user = await User.findOne({ email, username });
+    if (!user)
+      return next(
+        errorHandler(404, "User not found with provided email and username")
+      );
+
+    // Generate token
+    const token = crypto.randomBytes(32).toString("hex");
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 1000 * 60 * 60; // 1 hour
+    await user.save();
+
+    // No email is sent. Just return the reset link (for demo/flow purpose)
+    const resetLink = `${
+      process.env.CLIENT_URL || "http://localhost:5173"
+    }/reset-password/${token}`;
+
+    res.status(200).json({
+      message: "Verification successful. You can now reset your password.",
+      resetLink, // Used by frontend to extract token
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Reset password: set new password
+export const resetPassword = async (req, res, next) => {
+  const { token, password } = req.body;
+  if (!token || !password)
+    return next(errorHandler(400, "All fields required"));
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+    if (!user) return next(errorHandler(400, "Invalid or expired token"));
+
+    if (password.length < 6) {
+      return next(errorHandler(400, "Password must be at least 6 characters"));
+    }
+    user.password = await bcryptjs.hash(password, 10);
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+    await user.save();
+
+    res.status(200).json({ message: "Password has been reset successfully" });
+  } catch (error) {
+    next(error);
   }
 };

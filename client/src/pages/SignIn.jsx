@@ -91,6 +91,14 @@ export default function SignIn() {
                 id="password"
                 onChange={handleChange}
               />
+              <div className="text-right mt-1">
+                <Link
+                  to="/forgot-password"
+                  className="text-blue-500 text-sm hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
             </div>
 
             <Button
